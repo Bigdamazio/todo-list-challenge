@@ -7,60 +7,51 @@ AllCops:
     - 'node_modules/**/*'
     - 'tmp/**/*'
 
+# Desativa regras específicas
 Style/StringLiterals:
   Enabled: false  # permite usar aspas simples ou duplas
 
 Layout/TrailingWhitespace:
-  Enabled: false  # não exige apagar espaços no fim da linha
+  Enabled: false  # ignora espaços no fim da linha
 
 Layout/TrailingEmptyLines:
-  Enabled: false  # não exige linha em branco no final do arquivo
+  Enabled: false  # ignora linha em branco no fim do arquivo
+
+Layout/LeadingCommentSpace:
+  Enabled: false  # ignora falta de espaço após comentários com #
 
 Layout/SpaceInsideArrayLiteralBrackets:
-  Enabled: false  # não exige espaçamento exato em arrays
+  Enabled: false  # ignora espaços dentro de colchetes []
+
+Layout/EmptyLinesAroundClassBody:
+  Enabled: false  # ignora falta de linhas em branco na classe
+
+Layout/EndAlignment:
+  Enabled: false  # ignora desalinhamento de `end`
 
 Style/FrozenStringLiteralComment:
-  Enabled: false  # não exige o `# frozen_string_literal: true` no topo
+  Enabled: false  # não exige comentário `# frozen_string_literal: true`
 
 Style/Documentation:
   Enabled: false  # não exige comentários em classes e módulos
 
 Metrics/BlockLength:
-  Enabled: false  # não limita o tamanho de métodos com blocos grandes
+  Enabled: false  # não limita tamanho de blocos
 
 Metrics/MethodLength:
-  Enabled: false  # não limita o tamanho de métodos
+  Enabled: false  # não limita tamanho de métodos
 
-  Layout/TrailingWhitespace:
+Rails/ActionFilter:
   Enabled: false
 
-Layout/TrailingEmptyLines:
+Rails/ActionOrder:
   Enabled: false
 
-Style/StringLiterals:
+Rails/HttpStatus:
   Enabled: false
 
-Layout/LeadingCommentSpace:
+Rails/FilePath:
   Enabled: false
 
-Layout/TrailingWhitespace:
-  Enabled: false
-
-Layout/TrailingEmptyLines:
-  Enabled: false
-
-Layout/LeadingCommentSpace:
-  Enabled: false
-
-Layout/SpaceInsideArrayLiteralBrackets:
-  Enabled: false
-
-Layout/EmptyLinesAroundClassBody:
-  Enabled: false
-
-Layout/EndAlignment:
-  Enabled: false
-
-Style/StringLiterals:
-  Enabled: false
-
+AllCops:
+  SuggestExtensions: false
