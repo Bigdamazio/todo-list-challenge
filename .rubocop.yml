@@ -1,7 +1,3 @@
-require:
-  - rubocop-rails
-  - rubocop-rails-omakase
-
 AllCops:
   NewCops: enable
   TargetRubyVersion: 3.2
@@ -11,6 +7,10 @@ AllCops:
     - 'db/schema.rb'
     - 'node_modules/**/*'
     - 'tmp/**/*'
+
+# Ativa suporte a regras específicas do Rails
+plugins:
+  - rubocop-rails
 
 Layout/LeadingCommentSpace:
   Enabled: false
