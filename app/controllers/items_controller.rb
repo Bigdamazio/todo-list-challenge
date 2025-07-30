@@ -4,9 +4,9 @@ class ItemsController < ApplicationController
     @item = @list.items.build(item_params)
 
     if @item.save
-      redirect_to @list, notice: 'Item adicionado com sucesso!'
+      redirect_to @list, notice: "Item adicionado com sucesso!"
     else
-      render 'lists/show', status: :unprocessable_entity
+      render "lists/show", status: :unprocessable_entity
     end
   end
 
@@ -16,8 +16,8 @@ class ItemsController < ApplicationController
     @item.destroy
 
     respond_to do |format|
-      format.html { redirect_to @list, notice: 'Item excluído com sucesso!' }
-      format.turbo_stream { flash.now[:notice] = 'Item excluído com sucesso!' }
+      format.html { redirect_to @list, notice: "Item excluído com sucesso!" }
+      format.turbo_stream { flash.now[:notice] = "Item excluído com sucesso!" }
     end
   end
 
@@ -27,12 +27,12 @@ class ItemsController < ApplicationController
 
     if @item.update(item_params)
       respond_to do |format|
-        format.html { redirect_to @list, notice: 'Item atualizado com sucesso!' }
+        format.html { redirect_to @list, notice: "Item atualizado com sucesso!" }
         format.turbo_stream
       end
     else
       respond_to do |format|
-        format.html { redirect_to @list, alert: 'Erro ao atualizar o item.' }
+        format.html { redirect_to @list, alert: "Erro ao atualizar o item." }
         format.turbo_stream
       end
     end

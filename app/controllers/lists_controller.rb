@@ -1,7 +1,7 @@
 # app/controllers/lists_controller.rb
 class ListsController < ApplicationController
   # Callback para definir a @list antes das ações show, edit, update e destroy.
-  before_action :set_list, only: [:show, :edit, :update, :destroy]
+  before_action :set_list, only: [ :show, :edit, :update, :destroy ]
 
   # GET /lists
   # Exibe todas as listas.
@@ -27,7 +27,7 @@ class ListsController < ApplicationController
   def create
     @list = List.new(list_params)
     if @list.save
-      redirect_to @list, notice: 'Lista criada com sucesso!'
+      redirect_to @list, notice: "Lista criada com sucesso!"
     else
       # Se a validação falhar, renderiza o formulário novamente com os erros.
       render :new, status: :unprocessable_entity
@@ -45,7 +45,7 @@ class ListsController < ApplicationController
   def update
     # @list já foi definido pelo before_action :set_list.
     if @list.update(list_params)
-      redirect_to @list, notice: 'Lista atualizada com sucesso!'
+      redirect_to @list, notice: "Lista atualizada com sucesso!"
     else
       render :edit, status: :unprocessable_entity
     end
@@ -55,7 +55,7 @@ class ListsController < ApplicationController
   # Exclui uma lista específica.
   def destroy
     @list.destroy # @list já foi definido pelo before_action :set_list.
-    redirect_to lists_path, notice: 'Lista excluída com sucesso.'
+    redirect_to lists_path, notice: "Lista excluída com sucesso."
   end
 
   private
@@ -65,7 +65,7 @@ class ListsController < ApplicationController
   def set_list
     @list = List.find(params[:id])
   rescue ActiveRecord::RecordNotFound # Adiciona tratamento de erro caso a lista não seja encontrada.
-    redirect_to lists_path, alert: 'Lista não encontrada.'
+    redirect_to lists_path, alert: "Lista não encontrada."
   end
 
   # Strong parameters para o model List.
