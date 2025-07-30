@@ -35,3 +35,13 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+# Adicionado para evitar arquivos grandes que impedem push para o GitHub
+.cache/
+.cursor-server/
+.local/
+.snap/
+node_modules/
+tmp/
+*.zip
+*.log
+*.sqlite3
