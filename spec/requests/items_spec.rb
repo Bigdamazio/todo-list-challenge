@@ -5,9 +5,9 @@ RSpec.describe "Items", type: :request do
 
   describe "POST /lists/:list_id/items" do
     it "cria um novo item" do
-      expect {
+      expect do
         post list_items_path(list), params: { item: { content: "Novo item" } }
-      }.to change(Item, :count).by(1)
+      end.to change(Item, :count).by(1)
     end
   end
 end

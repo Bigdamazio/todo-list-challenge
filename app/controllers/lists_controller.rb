@@ -1,7 +1,7 @@
 # app/controllers/lists_controller.rb
 class ListsController < ApplicationController
   # Callback para definir a @list antes das ações show, edit, update e destroy.
-  before_action :set_list, only: [ :show, :edit, :update, :destroy ]
+  before_action :set_list, only: %i[show edit update destroy]
 
   # GET /lists
   # Exibe todas as listas.
@@ -54,7 +54,7 @@ class ListsController < ApplicationController
   # DELETE /lists/:id
   # Exclui uma lista específica.
   def destroy
-    @list.destroy # @list já foi definido pelo before_action :set_list.
+    @list.destroy! # @list já foi definido pelo before_action :set_list.
     redirect_to lists_path, notice: "Lista excluída com sucesso."
   end
 
@@ -71,6 +71,6 @@ class ListsController < ApplicationController
   # Strong parameters para o model List.
   # Permite apenas o atributo :title para segurança.
   def list_params
-    params.require(:list).permit(:title)
+    params.expect(list: [:title])
   end
 end

@@ -13,7 +13,7 @@ class ItemsController < ApplicationController
   def destroy
     @list = List.find(params[:list_id])
     @item = @list.items.find(params[:id])
-    @item.destroy
+    @item.destroy!
 
     respond_to do |format|
       format.html { redirect_to @list, notice: "Item excluído com sucesso!" }
@@ -48,7 +48,7 @@ class ItemsController < ApplicationController
   def toggle_done
     @list = List.find(params[:list_id])
     @item = @list.items.find(params[:id])
-    @item.update(done: !@item.done)
+    @item.update!(done: !@item.done)
 
     respond_to do |format|
       format.turbo_stream do
@@ -64,6 +64,6 @@ class ItemsController < ApplicationController
   private
 
   def item_params
-    params.require(:item).permit(:content, :done)
+    params.expect(item: %i[content done])
   end
 end

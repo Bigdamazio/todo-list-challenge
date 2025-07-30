@@ -1,8 +1,32 @@
-# Omakase Ruby styling for Rails
-inherit_gem: { rubocop-rails-omakase: rubocop.yml }
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.2
+  Exclude:
+    - 'bin/**/*'
+    - 'db/schema.rb'
+    - 'node_modules/**/*'
+    - 'tmp/**/*'
 
-# Overwrite or add rules to create your own house style
-#
-# # Use `[a, [b, c]]` not `[ a, [ b, c ] ]`
-# Layout/SpaceInsideArrayLiteralBrackets:
-#   Enabled: false
+Style/StringLiterals:
+  Enabled: false  # permite usar aspas simples ou duplas
+
+Layout/TrailingWhitespace:
+  Enabled: false  # não exige apagar espaços no fim da linha
+
+Layout/TrailingEmptyLines:
+  Enabled: false  # não exige linha em branco no final do arquivo
+
+Layout/SpaceInsideArrayLiteralBrackets:
+  Enabled: false  # não exige espaçamento exato em arrays
+
+Style/FrozenStringLiteralComment:
+  Enabled: false  # não exige o `# frozen_string_literal: true` no topo
+
+Style/Documentation:
+  Enabled: false  # não exige comentários em classes e módulos
+
+Metrics/BlockLength:
+  Enabled: false  # não limita o tamanho de métodos com blocos grandes
+
+Metrics/MethodLength:
+  Enabled: false  # não limita o tamanho de métodos

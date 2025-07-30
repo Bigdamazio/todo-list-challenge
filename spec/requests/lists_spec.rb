@@ -10,9 +10,9 @@ RSpec.describe "Lists", type: :request do
 
   describe "POST /lists" do
     it "cria uma nova lista" do
-      expect {
+      expect do
         post lists_path, params: { list: { title: "Nova lista" } }
-      }.to change(List, :count).by(1)
+      end.to change(List, :count).by(1)
     end
   end
 end
