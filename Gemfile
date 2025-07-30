@@ -14,7 +14,7 @@ gem "bootsnap", require: false
 gem "jbuilder"
 gem "tzinfo-data", platforms: %i[windows jruby]
 
-gem "solid_cable"
+# gem "solid_cable"
 # gem "solid_cache"
 # gem "solid_queue"
 
