@@ -1,57 +1,46 @@
+require:
+  - rubocop-rails
+  - rubocop-rails-omakase
+
 AllCops:
   NewCops: enable
   TargetRubyVersion: 3.2
+  SuggestExtensions: false
   Exclude:
     - 'bin/**/*'
     - 'db/schema.rb'
     - 'node_modules/**/*'
     - 'tmp/**/*'
 
-# Desativa regras específicas
+Layout/LeadingCommentSpace:
+  Enabled: false
+
 Style/StringLiterals:
-  Enabled: false  # permite usar aspas simples ou duplas
+  Enabled: false
 
 Layout/TrailingWhitespace:
-  Enabled: false  # ignora espaços no fim da linha
+  Enabled: false
 
 Layout/TrailingEmptyLines:
-  Enabled: false  # ignora linha em branco no fim do arquivo
-
-Layout/LeadingCommentSpace:
-  Enabled: false  # ignora falta de espaço após comentários com #
+  Enabled: false
 
 Layout/SpaceInsideArrayLiteralBrackets:
-  Enabled: false  # ignora espaços dentro de colchetes []
-
-Layout/EmptyLinesAroundClassBody:
-  Enabled: false  # ignora falta de linhas em branco na classe
-
-Layout/EndAlignment:
-  Enabled: false  # ignora desalinhamento de `end`
+  Enabled: false
 
 Style/FrozenStringLiteralComment:
-  Enabled: false  # não exige comentário `# frozen_string_literal: true`
+  Enabled: false
 
 Style/Documentation:
-  Enabled: false  # não exige comentários em classes e módulos
+  Enabled: false
 
 Metrics/BlockLength:
-  Enabled: false  # não limita tamanho de blocos
+  Enabled: false
 
 Metrics/MethodLength:
-  Enabled: false  # não limita tamanho de métodos
-
-Rails/ActionFilter:
   Enabled: false
 
-Rails/ActionOrder:
+Layout/EmptyLinesAroundClassBody:
   Enabled: false
 
-Rails/HttpStatus:
+Layout/EndAlignment:
   Enabled: false
-
-Rails/FilePath:
-  Enabled: false
-
-AllCops:
-  SuggestExtensions: false
