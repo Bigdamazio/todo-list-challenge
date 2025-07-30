@@ -22,8 +22,3 @@ production:
   <<: *default
   url: <%= ENV["DATABASE_URL"] %>
   # >>> INÍCIO DAS NOVAS LINHAS PARA A FILA <<<
-  queue:
-    <<: *default
-    url: <%= ENV["DATABASE_URL"] %> # Aponta para a mesma URL do DB principal (Supabase)
-    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %> # Pode ser o mesmo pool de conexões
-  # >>> FIM DAS NOVAS LINHAS PARA A FILA <<<
