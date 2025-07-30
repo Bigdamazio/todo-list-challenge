@@ -1,0 +1,21 @@
+<div id="<%= dom_id item %>" class="item <%= 'completed' if item.done %>">
+  <div class="item-content">
+    <%= button_to toggle_done_list_item_path(list, item),
+        method: :patch,
+        form: { data: { turbo_stream: true }, class: "inline-button" },
+        class: "item-toggle-btn" do %>
+      <div class="custom-toggle <%= 'checked' if item.done %>"></div>
+    <% end %>
+
+    <span class="item-text">
+      <%= item.content %>
+    </span>
+  </div>
+
+  <div class="item-actions">
+    <%= button_to '×', list_item_path(list, item),
+        method: :delete,
+        form: { data: { turbo_confirm: 'Tem certeza que deseja apagar este item?' }, class: "delete-item-form" },
+        class: "action-btn delete" %>
+  </div>
+</div>

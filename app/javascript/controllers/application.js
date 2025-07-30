@@ -1,9 +1,11 @@
 import { Application } from "@hotwired/stimulus"
+import SubmitFormController from "./submit_form_controller"
+application.register("submit-form", SubmitFormController)
 
 const application = Application.start()
 
-// Configure Stimulus development experience
 application.debug = false
-window.Stimulus   = application
+window.Stimulus = application
 
-export { application }
+import TurboFormController from "./controllers/turbo_form_controller"
+application.register("turbo-form", TurboFormController)

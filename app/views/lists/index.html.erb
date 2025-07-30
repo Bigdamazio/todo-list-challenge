@@ -1,0 +1,63 @@
+<%# app/views/lists/index.html.erb %>
+<div class="container">
+  <div class="page-header">
+    <h1>Suas listas</h1>
+    <p>😁</p>
+  </div>
+
+  <%# Container para mensagens flash que podem ser atualizadas via Turbo Stream %>
+  <div id="flash">
+    <% if notice.present? %>
+      <div class="alert alert-success">
+        <%= notice %>
+      </div>
+    <% end %>
+
+    <% if alert.present? %>
+      <div class="alert alert-error">
+        <%= alert %>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @lists.any? %>
+    <div class="lists-grid">
+      <% @lists.each do |list| %>
+        <div class="list-card">
+          <%= link_to list_path(list), class: "list-link" do %>
+            <div class="list-content">
+              <h3><%= list.title %></h3>
+              <div class="list-meta">
+                <span class="count"><%= list.items.count %> itens</span>
+                <% if list.items.any? %>
+                  <span class="progress">
+                    <%= list.items.where(done: true).count %>/<%= list.items.count %> Feito
+                  </span>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+
+          <div class="list-actions">
+            <%= button_to '×', list_path(list),
+    method: :delete,
+    form: { data: { turbo_confirm: 'Tem certeza que deseja apagar esta lista?' }, class: "delete-list-form" },
+    class: "action-btn delete",
+    form_class: "inline-button" %>
+
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <div class="empty-content">
+        <h2>Sem listas cadastradas</h2>
+        <p>Crie sua primeira lista para começar</p>
+        <%= link_to new_list_path, class: "btn btn-primary" do %>
+          Nova Lista
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,21 @@
+<%# app/views/lists/edit.html.erb %>
+<div class="container">
+  <div class="form-page">
+    <div class="form-header">
+      <h1>Editar Listas</h1>
+      <p>Atualizar os detalhes da lista</p>
+    </div>
+
+    <div class="form-container">
+      <%= form_with(model: @list, class: "form") do |form| %>
+        <%= render 'form', form: form %>
+      <% end %>
+    </div>
+
+    <div class="form-footer">
+      <%= link_to list_path(@list), class: "link" do %>
+        ← Voltar para lista anterior
+      <% end %>
+    </div>
+  </div>
+</div>

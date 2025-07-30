@@ -1,0 +1,76 @@
+<div class="container">
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <h1><%= @list.title %></h1>
+        <div class="list-stats">
+          <span><%= @list.items.count %> Itens</span>
+          <span id="completed-items-count"><%= @list.items.where(done: true).count %> Concluído</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <%= link_to edit_list_path(@list), class: "btn btn-ghost" do %>
+          Editar
+        <% end %>
+        <%= link_to lists_path, class: "btn btn-ghost" do %>
+          ← Voltar
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div id="flash">
+    <% if notice.present? %>
+      <div class="alert alert-success">
+        <%= notice %>
+      </div>
+    <% end %>
+    <% if alert.present? %>
+      <div class="alert alert-error">
+        <%= alert %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="show-layout">
+    <div class="items-section">
+      <% if @list.items.any? %>
+        <div class="items-list">
+          <% @list.items.each do |item| %>
+  <% next if item.new_record? %> <%# <-- pula item sem ID (não salvo) %>
+  <%= render partial: "items/item", locals: { item: item, list: @list } %>
+<% end %>
+
+        </div>
+      <% else %>
+        <div class="empty-items">
+          <p>Sem itens cadastrados, crie o item desejado.</p>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="add-item-section">
+      <%= form_with model: [@list, @item], class: "add-item-form" do |form| %>
+        <% if @item.errors.any? %>
+          <div class="form-errors">
+            <% @item.errors.each do |error| %>
+              <p><%= error.full_message %></p>
+            <% end %>
+          </div>
+        <% end %>
+
+        <div class="form-group">
+          <%= form.text_field :content,
+              class: "input",
+              placeholder: "Adicionar novo item",
+              required: true,
+              autocomplete: "off" %>
+        </div>
+
+        <div class="form-actions">
+          <%= form.submit 'Adicionar Item', class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

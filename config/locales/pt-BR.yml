@@ -1,0 +1,10 @@
+pt-BR:
+  activerecord:
+    models:
+      item: "Item"
+    attributes:
+      item:
+        content: "Conteúdo"
+  errors:
+    messages:
+      blank: "não pode ficar em branco"

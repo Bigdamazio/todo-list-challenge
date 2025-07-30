@@ -1,0 +1,27 @@
+<%# app/views/lists/_form.html.erb %>
+
+<%# Exibe erros de validação, se houver %>
+<% if form.object.errors.any? %>
+  <div class="form-errors">
+    <h3><%= pluralize(form.object.errors.count, "erro") %> impediu que esta lista fosse salva:</h3>
+    <ul>
+      <% form.object.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<div class="space-y-6">
+  <div class="form-group">
+    <%= form.label :title, "Título da Lista", class: "label" %>
+    <%= form.text_field :title,
+        required: true,
+        class: "input",
+        placeholder: "Insira o Título da Lista" %>
+  </div>
+
+  <div class="form-actions flex justify-end">
+    <%= form.submit 'Salvar Lista', class: "btn btn-primary" %>
+  </div>
+</div>

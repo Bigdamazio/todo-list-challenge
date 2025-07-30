@@ -1,0 +1,7 @@
+<%= turbo_stream.replace @item do %>
+  <%= render partial: "items/item", locals: { item: @item, list: @list } %>
+<% end %>
+
+<%= turbo_stream.update "completed-items-count" do %>
+  <%= @list.items.where(done: true).count %> Concluído
+<% end %>
