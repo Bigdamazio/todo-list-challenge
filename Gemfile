@@ -1,50 +1,38 @@
 source "https://rubygems.org"
 
-
-gem "rails", "~> 8.0.2"
 gem "pg", "~> 1.1"
 gem "puma", ">= 5.0"
+gem "rails", "~> 8.0.2"
 
-
-gem "propshaft"
 gem "importmap-rails"
-gem "turbo-rails"
+gem "propshaft"
 gem "stimulus-rails"
 gem "tailwindcss-rails"
+gem "turbo-rails"
 
-
-gem "jbuilder"
 gem "bootsnap", require: false
+gem "jbuilder"
 gem "tzinfo-data", platforms: %i[windows jruby]
 
-
 gem "solid_cable"
-gem "solid_cache"
+# gem "solid_cache"
 # gem "solid_queue"
-
 
 gem "kamal", require: false
 gem "thruster", require: false
 
 group :development, :test do
-  
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
-    gem 'sqlite3'
-
-  
+  gem 'sqlite3'
   gem "factory_bot_rails"
   gem "rails-controller-testing"
   gem "rspec-rails"
-
-  
   gem "brakeman", require: false
-
-  
   gem "rubocop", require: false
-  gem "rubocop-rails", require: false
-  gem "rubocop-rspec", require: false
   gem "rubocop-capybara", require: false
   gem "rubocop-factory_bot", require: false
+  gem "rubocop-rails", require: false
+  gem "rubocop-rspec", require: false
   gem "rubocop-rspec_rails", require: false
 end
 
