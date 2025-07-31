@@ -148,7 +148,7 @@ spec/
 
 ---
 
-## ✅ TODO List para próximas verificações
+## ✅ TODO List para próximas versões
 
 * [ ] Adicionar autenticação de usuários
 * [ ] Melhorar responsividade mobile
