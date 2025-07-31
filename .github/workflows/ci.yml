@@ -58,14 +58,10 @@ jobs:
 
     services:
       postgres:
-        # Use uma versão específica do PostgreSQL para garantir consistência.
-        # A versão 16 é uma boa escolha e amplamente compatível.
         image: postgres:16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          # Define o nome do banco de dados de teste que será criado automaticamente pelo serviço.
-          # O padrão para Rails é <nome_do_app>_test (ex: todo_list_challenge_test).
           POSTGRES_DB: todo_list_challenge_test
         ports:
           - 5432:5432
@@ -73,41 +69,32 @@ jobs:
 
     steps:
       - name: Install system packages
-        # Instala dependências do sistema operacional necessárias para o Ruby e testes (ex: libpq-dev para pg gem, chrome para system tests).
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libpq-dev libyaml-dev pkg-config google-chrome-stable
 
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Ruby environment
-        # Configura o ambiente Ruby e instala as gems usando bundler-cache para otimização.
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: .ruby-version # Usa a versão do Ruby definida no seu arquivo .ruby-version
-          bundler-cache: true # Instala as gems e as cacheia
-
-      # --- START: NOVAS ETAPAS PARA SUPORTE AO SUPABASE NO TESTE ---
+          ruby-version: .ruby-version
+          bundler-cache: true
 
       - name: Wait for PostgreSQL service to be fully ready
-        # Dá um tempo extra para o serviço PostgreSQL iniciar completamente e aceitar conexões.
-        # O health-check já ajuda, mas um pequeno delay adicional pode garantir.
         run: |
           echo "Waiting for PostgreSQL to be ready..."
-          sleep 15 # Aumentei um pouco o tempo de espera para maior robustez
+          sleep 15
           echo "PostgreSQL should be ready now."
 
       - name: Create PostgreSQL Schemas and Enable Supabase-related Extensions
-        # Este é o passo CRÍTICO. Ele se conecta ao banco de dados PostgreSQL temporário
-        # e cria os esquemas e habilita as extensões que seu `db/schema.rb` espera,
-        # imitando o ambiente do Supabase.
         run: |
           echo "Creating necessary PostgreSQL schemas and enabling extensions..."
-          PGPASSWORD=${{ services.postgres.env.POSTGRES_PASSWORD }} psql \
-            -h ${{ services.postgres.hostname }} \
-            -p ${{ services.postgres.ports[0] }} \
-            -U ${{ services.postgres.env.POSTGRES_USER }} \
-            -d ${{ services.postgres.env.POSTGRES_DB }} <<EOF
-            -- Criação dos esquemas esperados pelo Supabase e seu schema.rb
+          # Usando as variáveis de ambiente definidas abaixo para se conectar ao psql
+          PGPASSWORD=$POSTGRES_PASSWORD psql \
+            -h $PGHOST \
+            -p $PGPORT \
+            -U $PGUSER \
+            -d $PGDATABASE <<EOF
             CREATE SCHEMA IF NOT EXISTS auth;
             CREATE SCHEMA IF NOT EXISTS extensions;
             CREATE SCHEMA IF NOT EXISTS graphql;
@@ -117,47 +104,37 @@ jobs:
             CREATE SCHEMA IF NOT EXISTS storage;
             CREATE SCHEMA IF NOT EXISTS vault;
 
-            -- Habilitação das extensões.
-            -- A extensão 'pg_graphql' é a principal causa do erro anterior.
-            -- A extensão 'supabase_vault' está COMENTADA. Ela é muito específica do Supabase
-            -- e não está disponível em imagens PostgreSQL padrão. Se seus testes REALMENTE
-            -- precisarem dela, você precisaria de uma imagem Docker personalizada para o Postgres
-            -- que a inclua, ou reconsiderar a dependência em ambiente de CI.
             CREATE EXTENSION IF NOT EXISTS "pg_stat_statements" SCHEMA extensions;
             CREATE EXTENSION IF NOT EXISTS "pgcrypto" SCHEMA extensions;
             CREATE EXTENSION IF NOT EXISTS "uuid-ossp" SCHEMA extensions;
             CREATE EXTENSION IF NOT EXISTS "pg_graphql" SCHEMA graphql;
             CREATE EXTENSION IF NOT EXISTS "plpgsql" SCHEMA pg_catalog;
-            -- CREATE EXTENSION IF NOT EXISTS "supabase_vault" SCHEMA vault; # Descomente APENAS se souber como instalá-la no ambiente CI.
+            -- CREATE EXTENSION IF NOT EXISTS "supabase_vault" SCHEMA vault;
             EOF
           echo "PostgreSQL schemas and extensions processed."
         env:
-          # Variáveis de ambiente para o comando psql se conectar ao serviço PostgreSQL.
-          PGHOST: ${{ services.postgres.hostname }}
-          PGPORT: ${{ services.postgres.ports[0] }}
+          # Variáveis de ambiente que SÃO LITERAIS ou referenciam diretamente o SERVICE.
+          # Estes valores serão usados pelo comando psql DENTRO DESTE PASSO.
+          PGHOST: localhost # Quando o serviço está no mesmo host, 'localhost' funciona.
+          PGPORT: 5432
           PGUSER: ${{ services.postgres.env.POSTGRES_USER }}
           PGPASSWORD: ${{ services.postgres.env.POSTGRES_PASSWORD }}
           PGDATABASE: ${{ services.postgres.env.POSTGRES_DB }}
 
-      # --- END: NOVAS ETAPAS ---
-
       - name: Run database migrations
-        # Executa as migrações do Rails para configurar o banco de dados de teste.
         env:
           RAILS_ENV: test
-          # DATABASE_URL é configurada para apontar para o serviço PostgreSQL.
-          DATABASE_URL: postgres://${{ services.postgres.env.POSTGRES_USER }}:${{ services.postgres.env.POSTGRES_PASSWORD }}@${{ services.postgres.hostname }}:${{ services.postgres.ports[0] }}/${{ services.postgres.env.POSTGRES_DB }}
+          # A DATABASE_URL também precisa usar as variáveis de ambiente locais ou literais.
+          DATABASE_URL: postgres://${{ services.postgres.env.POSTGRES_USER }}:${{ services.postgres.env.POSTGRES_PASSWORD }}@localhost:5432/${{ services.postgres.env.POSTGRES_DB }}
         run: bin/rails db:migrate
 
       - name: Run tests
-        # Executa os testes do Rails.
         env:
           RAILS_ENV: test
-          DATABASE_URL: postgres://${{ services.postgres.env.POSTGRES_USER }}:${{ services.postgres.env.POSTGRES_PASSWORD }}@${{ services.postgres.hostname }}:${{ services.postgres.ports[0] }}/${{ services.postgres.env.POSTGRES_DB }}
+          DATABASE_URL: postgres://${{ services.postgres.env.POSTGRES_USER }}:${{ services.postgres.env.POSTGRES_PASSWORD }}@localhost:5432/${{ services.postgres.env.POSTGRES_DB }}
         run: bin/rails db:test:prepare test test:system
 
       - name: Keep screenshots from failed system tests
-        # Carrega screenshots para depuração se os testes de sistema falharem.
         uses: actions/upload-artifact@v4
         if: failure()
         with:
